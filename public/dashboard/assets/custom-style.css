@@ -1,0 +1,27 @@
+.custom-rtl{
+    direction: rtl!important;
+}
+.pagination{
+    direction: ltr!important;
+    float: left;
+}
+header,h1,h2,h3,h4,a,li,th,label,button,.swal-modal,table,.invalid-feedback{
+    font-family: 'Tajawal', sans-serif!important;
+}
+
+p,h5,h6,input,select{
+    font-family: 'Cairo', sans-serif!important;
+
+}
+
+.timeline::before{
+    background-color:transparent!important;
+}
+input,select{
+    direction: rtl!important;
+}
+@media (min-width: 576px) {
+div#event-modal .modal-dialog{
+    width: 80%!important;
+}
+}
