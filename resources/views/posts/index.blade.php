@@ -50,23 +50,29 @@
             <div class="modal-body">
 
                 <ul id="save_msgList"></ul>
+                <form action="javascript:void(0)" id="addEditBookForm" name="addEditBookForm" method="POST" enctype="multipart/form-data">
+                    <div class="form-group mb-3">
+                        <label for="">Title</label>
+                        <input type="text" required class="title form-control">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="">Contact Number</label>
+                        <input type="text" required class="contact_number form-control">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="">Description</label>
+                        <textarea type="text" rows="4" required class="description form-control"></textarea>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="">Image</label>
+                        <input type="file" required accept="image/*" id="image" class="image form-control">
+                    </div>
 
-                <div class="form-group mb-3">
-                    <label for="">Title</label>
-                    <input type="text" required class="title form-control">
-                </div>
-                <div class="form-group mb-3">
-                    <label for="">Contact Number</label>
-                    <input type="text" required class="contact_number form-control">
-                </div>
-                <div class="form-group mb-3">
-                    <label for="">Description</label>
-                    <textarea type="text" rows="4" required class="description form-control"></textarea>
-                </div>
-                <div class="form-group mb-3">
-                    <label for="">Image</label>
-                    <input type="file" required accept="image/*" class="image form-control">
-                </div>
+                    <div class="col-sm-6 pull-right">
+                        <img id="preview-image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/220px-Image_created_with_a_mobile_phone.png"
+                              alt="preview image" width="200" height="200">
+                    </div>
+                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -89,24 +95,34 @@
             </div>
 
             <div class="modal-body">
+                <form method="post" enctype="multipart/form-data">
+                    <ul id="update_msgList"></ul>
 
-                <ul id="update_msgList"></ul>
+                    <input type="hidden" id="stud_id" />
 
-                <input type="hidden" id="stud_id" />
+                    <div class="form-group mb-3">
+                        <label for="">Title</label>
+                        <input type="text" id="title" required class="form-control">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="">Contact Number</label>
+                        <input type="text" id="contact_number" required class="form-control">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="">Description</label>
+                        <textarea type="text" rows="5" id="description" required class="form-control"></textarea>
+                    </div>
 
-                <div class="form-group mb-3">
-                    <label for="">Title</label>
-                    <input type="text" id="title" required class="form-control">
-                </div>
-                <div class="form-group mb-3">
-                    <label for="">Contact Number</label>
-                    <input type="text" id="contact_number" required class="form-control">
-                </div>
-                <div class="form-group mb-3">
-                    <label for="">Description</label>
-                    <textarea type="text" rows="5" id="description" required class="form-control"></textarea>
-                </div>
+                    <div class="form-group mb-3">
+                        <label for="">Image</label>
+                        <input type="file" required accept="image/*" id="image" class="image form-control">
+                    </div>
 
+                    <div class="col-sm-6 pull-right">
+                        <img id="preview-image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/220px-Image_created_with_a_mobile_phone.png"
+                            alt="preview image" width="200" height="200">
+                    </div>
+                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -159,6 +175,15 @@ $(function () {
     });
 
 
+    // image preview when upload
+    $(document).on('change','#image',function(){
+        console.log('change image')
+        let reader = new FileReader();
+        reader.onload = (e) => {
+            $('#preview-image').attr('src', e.target.result);
+        }
+        reader.readAsDataURL(this.files[0]);
+    })
 
     // Add new Post
     $(document).on('click', '.add_post', function (e) {
@@ -171,7 +196,6 @@ $(function () {
             'image': $('.image').val(),
         }
 
-        console.log(data)
 
         $.ajaxSetup({
             headers: {
@@ -203,6 +227,7 @@ $(function () {
                     $('#AddStudentModal').find('input').val('');
                     $('.add_post').text('Save');
                     $('#AddStudentModal').modal('hide');
+                    table.ajax.reload();
                 }
             }
         });
@@ -227,7 +252,6 @@ $(function () {
                     $('#success_message').text(response.message);
                     $('#editModal').modal('hide');
                 } else {
-                    // console.log(response.student.name);
                     $('#title').val(response.post.title);
                     $('#contact_number').val(response.post.contact_number);
                     $('#description').val(response.post.description);
@@ -253,6 +277,7 @@ $(function () {
             'title': $('#title').val(),
             'contact_number': $('#contact_number').val(),
             'description': $('#description').val(),
+            'image': $('.image').val(),
         }
 
         $.ajaxSetup({
@@ -267,7 +292,6 @@ $(function () {
             data: data,
             dataType: "json",
             success: function (response) {
-                // console.log(response);
                 if (response.status == 400) {
                     $('#update_msgList').html("");
                     $('#update_msgList').addClass('alert alert-danger');
@@ -284,7 +308,7 @@ $(function () {
                     $('#editModal').find('input').val('');
                     $('.update_student').text('Update');
                     $('#editModal').modal('hide');
-                    // fetchstudent();
+                    table.ajax.reload();
                 }
             }
         });
@@ -296,7 +320,6 @@ $(function () {
 
     // Show Modal For Delete  Post
     $(document).on('click', '.deletebtn', function () {
-        // var stud_id = $(this).val();
         var post_id = $(this).attr('data-id');
         $('#DeleteModal').modal('show');
         $('#deleteing_id').val(post_id);
@@ -307,7 +330,6 @@ $(function () {
     //  Delete  Post
     $(document).on('click', '.delete_student', function (e) {
         e.preventDefault();
-
         $(this).text('Deleting..');
         var id = $('#deleteing_id').val();
 
@@ -322,7 +344,6 @@ $(function () {
             url: "/user/posts/"+id,
             dataType: "json",
             success: function (response) {
-                // console.log(response);
                 if (response.status == 404) {
                     $('#success_message').addClass('alert alert-success');
                     $('#success_message').text(response.message);
@@ -333,7 +354,7 @@ $(function () {
                     $('#success_message').text(response.message);
                     $('.delete_student').text('Yes Delete');
                     $('#DeleteModal').modal('hide');
-                    // fetchstudent();
+                    table.ajax.reload();
                 }
             }
         });

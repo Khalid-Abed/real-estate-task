@@ -56,7 +56,7 @@ class PostController extends Controller
             'title' => 'required|min:3|max:50',
             'description' => 'required|max:2048|min:10',
             'contact_number' => 'required|min:10|max:15|unique:posts,contact_number',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            // 'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             // 'image' => 'required|image|file|max:2048',
         ]);
 
@@ -70,11 +70,13 @@ class PostController extends Controller
         else
         {
             $post = new Post;
-
-            // $name=time().$request->file('image')->getClientOriginalName();
-            $name=time().$request->file('image')->extension();
-            $request->file('image')->move(public_path('images/posts'),$name);
-            $post->image=$name;
+            if($request->hasFile('image'))
+            {
+                $name=time().$request->file('image')->getClientOriginalName();
+                // $name=time().$request->file('image')->extension();
+                $request->file('image')->move(public_path('images/posts'),$name);
+                $post->image=$name;
+            }
 
             $post->title = $request->input('title');
             $post->contact_number = $request->input('contact_number');
@@ -107,7 +109,6 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        // return view('posts.edit',compact('post'));
         if($post)
         {
             return response()->json([
@@ -139,7 +140,7 @@ class PostController extends Controller
             'description' => 'required|max:2048|min:10',
             'contact_number' => 'required|min:10|max:15|unique:posts,contact_number,'.$post->id,
             // 'image' => 'required|image|file|max:2048',
-            'image' => 'mimes:jpeg,png,jpg,gif,svg|max:2048',
+            // 'image' => 'mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         if($validator->fails())
@@ -171,26 +172,6 @@ class PostController extends Controller
             }
 
         }
-        // resize image intervension
-        // if($request->hasFile('image'))
-        // {
-        //     $path = public_path('images/posts/'.$post->image);
-        //     if(is_file($path)){
-        //         unlink('images/posts/'.$post->image);
-        //     }
-
-        //     $name=time().$request->image->getClientOriginalName();
-        //     $request->image->move(public_path('images/posts'),$name);
-        //     $post->update([
-        //         'image'=>$name
-        //     ]);
-        // }
-        // $post->update([
-        //     'title' => $request->title,
-        //     'description' => $request->description,
-        //     'contact_number' => $request->contact_number,
-        // ]);
-        // return redirect()->route('posts.index');
     }
 
     /**
