@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PostRequest;
 use App\Models\Post;
+// use DataTables;
+use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class PostController extends Controller
 {
@@ -13,10 +16,21 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $posts=Post::where('user_id',auth()->user()->id)->get();
-        return view('posts.index',compact('posts'));
+        if ($request->ajax()) {
+            $data = Post::select('*');
+            return DataTables::of($data)
+                    ->addIndexColumn()
+                    ->addColumn('action', function($data){
+                        $btn = '<a href="javascript:void(0)" data-id="'.$data->id.'" id="edit-record" class="edit btn btn-warning btn-sm">edit</a>';
+                        $btn .= '<a href="javascript:void(0)" data-id="'.$data->id.'" id="delete-record" class="delete btn btn-danger btn-sm mx-1">Delete</a>';
+                        return $btn;
+                    })
+                    ->rawColumns(['action'])
+                    ->make(true);
+        }
+        return view('posts.index');
     }
 
     /**

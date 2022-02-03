@@ -1,120 +1,160 @@
-@extends('layouts-real-estate.master')
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Laravel 8 Datatables Tutorial - ItSolutionStuff.com</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" />
+    <link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+</head>
+<body>
 
 
-@section('css')
-    <link href="{{asset('dashboard/assets/libs/flatpickr/flatpickr.min.css')}}" rel="stylesheet" type="text/css" />
-    <link href="{{asset('dashboard/assets/libs/selectize/css/selectize.bootstrap3.css')}}" rel="stylesheet"
-        type="text/css" />
-    <link href="{{asset('dashboard/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css')}}" rel="stylesheet" type="text/css" />
-    <link href="{{asset('dashboard/assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css')}}" rel="stylesheet" type="text/css" />
-    <link href="{{asset('dashboard/assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css')}}" rel="stylesheet" type="text/css" />
-    <link href="{{asset('dashboard/assets/libs/datatables.net-select-bs4/css//select.bootstrap4.min.css')}}" rel="stylesheet" type="text/css" />
-    <link href="{{asset('dashboard/assets/custom-style.css')}}" rel="stylesheet" type="text/css" />
-@endsection
+<div class="container">
+    <div class="card ">
+        <button id="btn-add" name="btn-add" class="btn btn-primary btn-xs my-2">Add New Post</button>
+    </div>
+    <table class="table table-bordered data-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>title</th>
+                <th>Contact number</th>
+                <th width="100px">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
 
+<div class="modal fade" id="linkEditorModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="linkEditorModalLabel">Link Editor</h4>
+            </div>
+            <div class="modal-body">
+                <form id="modalFormData" name="modalFormData" class="form-horizontal" novalidate="">
 
-@section('content')
+                    <div class="form-group">
+                        <label for="inputLink" class="col-sm-2 control-label">Title</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="title" name="title"
+                                   placeholder="Enter Title" value="">
+                        </div>
+                    </div>
 
-<div class="row">
-        <div class="col-12">
-            <div class="page-title-box">
-                <div class="page-title-right">
-                    <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="">الملف الشخصي</a></li>
-                        <li class="breadcrumb-item active">  حسابي</li>
-                    </ol>
-                </div>
-                <h4 class="page-title"> حسابي</h4>
+                    <div class="form-group">
+                        <label for="inputLink" class="col-sm-2 control-label">Description</label>
+                        <div class="col-sm-10">
+                            <textarea type="text" class="form-control" id="description" name="description"
+                                   placeholder="Enter description" value=""></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Contact Phone</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="contact_number" name="contact_number"
+                                   placeholder="Enter Link contact_number" value="">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Image</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="image" name="image"
+                                   placeholder="Enter Link image" value="">
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btn-save" value="add">Save changes
+                </button>
+                <input type="hidden" id="link_id" name="link_id" value="0">
             </div>
         </div>
     </div>
-
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="header-title"> المنشورات</h4>
+</div>
 
 
-                    <table id="basic-datatable"   class="table dt-responsive nowrap w-100">
+</body>
 
-                        <thead>
-                            <tr>
-                                <th>رقم تعريفي</th>
-                                <th>عنوان المنشور</th>
-                                <th>المستخدم</th>
-                                <th>الهاتف</th>
-                                <th>الصورة</th>
-                                <th>ادارة</th>
-                            </tr>
-                        </thead>
+<script type="text/javascript">
+  $(function () {
 
+    // initalize datatable
+    var table = $('.data-table').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: "{{ route('posts.index') }}",
+        columns: [
+            {data: 'id', name: 'id'},
+            {data: 'title', name: 'title'},
+            {data: 'contact_number', name: 'contact_number'},
+            {data: 'action', name: 'action', orderable: false, searchable: false},
+        ]
+    });
 
-                        <tbody>
-                            @foreach($posts as $post)
-                            <tr>
-                                <td>{{$loop->iteration}}</td>
-                                <td>{{$post->title}}</td>
-                                <td>{{$post->user->name }}</td>
-                                <td>{{$post->contact_number }}</td>
-                                <td>
-                                    @if (!is_file($post->image))
-                                        <img src="{{ asset('images/posts/'.$post->image)  }}" width="100" height="100"  style="border-radius: 50%" alt="">
-                                    @else
-                                        <img src="{{ asset('images/posts/default.jpg') }}" width="100" height="100"  style="border-radius: 50%" alt="">
-                                    @endif
-                                </td>
-                                <td>
-                                    <a type="button" href="" class="btn btn-sm btn-danger waves-effect waves-light"><i class="mdi mdi-delete"></i></a>
-                                    <a type="button" href="{{ route('posts.edit',$post->id) }}" class="btn btn-sm btn-warning waves-effect waves-light"><i class="mdi mdi-pencil-outline"></i></a>
-                                </td>
-                            </tr>
-                            @endforeach
+    ////----- Open the modal to CREATE a link -----////
+    $('#btn-add').click(function () {
+        $('#btn-save').val("add");
+        $('#modalFormData').trigger("reset");
+        $('#linkEditorModal').modal('show');
+    });
 
-                        </tbody>
-                    </table>
+    ////----- Open the modal to UPDATE a link -----////
+    $('body').on('click', '#edit-record', function () {
+        var post_id = $(this).attr('data-id');
+        $.get('posts/'+ post_id, function (data) {
+            console.log(data)
+            $('#link_id').val(data.id);
+            $('#title').val(data.title);
+            $('#description').val(data.description);
+            $('#contact_number').val(data.contact_number);
+            $('#btn-save').val("update");
+            $('#linkEditorModal').modal('show');
+        })
+    });
 
-                </div> <!-- end card body-->
-            </div> <!-- end card -->
-        </div><!-- end col-->
+    // // edit record
+    // $(document).on('click','#edit-record',function(){
+    //     var id=$(this).attr('data-id')
+    //     $.ajaxSetup({
+    //         headers: {
+    //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    //         }
+    //     });
+    //     $.ajax({
+    //         'url':"posts/edit/"+id,
+    //         'type':'get',
+    //         'data':{'id',id},
+    //         'success':function(result){
 
-    </div>
+    //         },
+    //         'error':function(error){
 
+    //         }
+    //     })
+    //     console.log(id)
 
+    // })
 
-    @endsection
+    // // delete record
+    // $(document).on('click','#delete-record',function(){
+    //     var id=$(this).attr('data-id')
+    //     console.log(id)
 
+    // })
 
-
-
-    @section('js')
-    <!-- third party js -->
-    <script src="{{asset('dashboard/assets/libs/datatables.net/js/jquery.dataTables.min.js')}}"></script>
-    <script src="{{asset('dashboard/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
-    <script src="{{asset('dashboard/assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js')}}"></script>
-    <script src="{{asset('dashboard/assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js')}}"></script>
-    <script src="{{asset('dashboard/assets/libs/datatables.net-buttons/js/dataTables.buttons.min.js')}}"></script>
-    <script src="{{asset('dashboard/assets/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js')}}"></script>
-    <script src="{{asset('dashboard/assets/libs/datatables.net-buttons/js/buttons.html5.min.js')}}"></script>
-    <script src="{{asset('dashboard/assets/libs/datatables.net-buttons/js/buttons.flash.min.js')}}"></script>
-    <script src="{{asset('dashboard/assets/libs/datatables.net-buttons/js/buttons.print.min.js')}}"></script>
-    <script src="{{asset('dashboard/assets/libs/datatables.net-keytable/js/dataTables.keyTable.min.js')}}"></script>
-    <script src="{{asset('dashboard/assets/libs/datatables.net-select/js/dataTables.select.min.js')}}"></script>
-    <script src="{{asset('dashboard/assets/libs/pdfmake/build/pdfmake.min.js')}}"></script>
-    <script src="{{asset('dashboard/assets/libs/pdfmake/build/vfs_fonts.js')}}"></script>
-    <!-- third party js ends -->
-
-    <!-- Datatables init -->
-    <script src="{{asset('dashboard/assets/js/pages/datatables.init.js')}}"></script>
-    <script>
-        $(document).on('click','.deleteCategory',function(){
-            var userID=$(this).attr('data-userid');
-            $('#app_id').val(userID);
-            $('#applicantDeleteModal').modal('show');
-        });
-
-        $(document).on('click','.Endless','.Endless',function(){
-            $('#applicantDeleteModal').modal('hide');
-        });
-    </script>
-    @endsection
+  });
+</script>
+</html>
