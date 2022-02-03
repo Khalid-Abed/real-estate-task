@@ -63,10 +63,10 @@
                     <label for="">Description</label>
                     <textarea type="text" rows="4" required class="description form-control"></textarea>
                 </div>
-                {{-- <div class="form-group mb-3">
+                <div class="form-group mb-3">
                     <label for="">Image</label>
-                    <input type="file" required class="image form-control">
-                </div> --}}
+                    <input type="file" required accept="image/*" class="image form-control">
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -124,7 +124,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Delete Student Data</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Delete Post Data</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -168,13 +168,17 @@ $(function () {
             'title': $('.title').val(),
             'contact_number': $('.contact_number').val(),
             'description': $('.description').val(),
+            'image': $('.image').val(),
         }
+
+        console.log(data)
 
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+
 
         $.ajax({
             type: "POST",

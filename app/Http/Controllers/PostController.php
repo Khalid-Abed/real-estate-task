@@ -56,7 +56,8 @@ class PostController extends Controller
             'title' => 'required',
             'description' => 'required|max:2048',
             'contact_number' => 'required|unique:posts,contact_number',
-            'image' => 'mimes:png,jpg,jpeg|max:1024',
+            // 'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            // 'image' => 'mimes:png,jpg,jpeg|max:1024',
         ]);
 
         if($validator->fails())
@@ -69,6 +70,12 @@ class PostController extends Controller
         else
         {
             $post = new Post;
+
+            // $name=time().$request->file('image')->getClientOriginalName();
+            $name=time().$request->file('image')->extension();
+            $request->file('image')->move(public_path('images/posts'),$name);
+            $post->image=$name;
+
             $post->title = $request->input('title');
             $post->contact_number = $request->input('contact_number');
             $post->description = $request->input('description');
