@@ -6,6 +6,7 @@ use App\Http\Requests\PostRequest;
 use App\Models\Post;
 // use DataTables;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 
 class PostController extends Controller
@@ -23,8 +24,8 @@ class PostController extends Controller
             return DataTables::of($data)
                     ->addIndexColumn()
                     ->addColumn('action', function($data){
-                        $btn = '<a href="javascript:void(0)" data-id="'.$data->id.'" id="edit-record" class="edit btn btn-warning btn-sm">edit</a>';
-                        $btn .= '<a href="javascript:void(0)" data-id="'.$data->id.'" id="delete-record" class="delete btn btn-danger btn-sm mx-1">Delete</a>';
+                        $btn = '<a href="javascript:void(0)" data-id="'.$data->id.'" id="edit-record" class="editbtn btn btn-warning btn-sm">edit</a>';
+                        $btn .= '<a href="javascript:void(0)" data-id="'.$data->id.'" id="delete-record" class="deletebtn  btn btn-danger btn-sm mx-1">Delete</a>';
                         return $btn;
                     })
                     ->rawColumns(['action'])
@@ -49,24 +50,35 @@ class PostController extends Controller
      * @param  \App\Http\Requests\StorePostRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(PostRequest $request)
+    public function store(Request $request)
     {
-        // resize image intervension
-        $imageName='';
-        if($request->hasFile('image'))
-        {
-            $name=time().$request->image->getClientOriginalName();
-            $request->image->move(public_path('images/posts'),$name);
-            $imageName=$name;
-        }
-        Post::create([
-            'user_id' => auth()->user()->id,
-            'title' => $request->title,
-            'description' => $request->description,
-            'contact_number' => $request->contact_number,
-            'image' => $imageName,
+        $validator = Validator::make($request->all(), [
+            'title' => 'required',
+            'description' => 'required|max:2048',
+            'contact_number' => 'required|unique:posts,contact_number',
+            'image' => 'mimes:png,jpg,jpeg|max:1024',
         ]);
-        return redirect()->route('posts.index');
+
+        if($validator->fails())
+        {
+            return response()->json([
+                'status'=>400,
+                'errors'=>$validator->messages()
+            ]);
+        }
+        else
+        {
+            $post = new Post;
+            $post->title = $request->input('title');
+            $post->contact_number = $request->input('contact_number');
+            $post->description = $request->input('description');
+            $post->save();
+            return response()->json([
+                'status'=>200,
+                'message'=>'Post Added Successfully.'
+            ]);
+        }
+
     }
 
     /**
@@ -88,7 +100,21 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        return view('posts.edit',compact('post'));
+        // return view('posts.edit',compact('post'));
+        if($post)
+        {
+            return response()->json([
+                'status'=>200,
+                'post'=> $post,
+            ]);
+        }
+        else
+        {
+            return response()->json([
+                'status'=>404,
+                'message'=>'No Post Found.'
+            ]);
+        }
     }
 
     /**
@@ -98,28 +124,65 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function update(PostRequest $request, Post $post)
+    public function update(Request $request, $id)
     {
-        // resize image intervension
-        if($request->hasFile('image'))
-        {
-            $path = public_path('images/posts/'.$post->image);
-            if(is_file($path)){
-                unlink('images/posts/'.$post->image);
-            }
+        $post = Post::find($id);
+        $validator = Validator::make($request->all(), [
+            'title' => 'required',
+            'description' => 'required|max:2048',
+            'contact_number' => 'required|unique:posts,contact_number,'.$post->id,
+            'image' => 'mimes:png,jpg,jpeg|max:1024',
+        ]);
 
-            $name=time().$request->image->getClientOriginalName();
-            $request->image->move(public_path('images/posts'),$name);
-            $post->update([
-                'image'=>$name
+        if($validator->fails())
+        {
+            return response()->json([
+                'status'=>400,
+                'errors'=>$validator->messages()
             ]);
         }
-        $post->update([
-            'title' => $request->title,
-            'description' => $request->description,
-            'contact_number' => $request->contact_number,
-        ]);
-        return redirect()->route('posts.index');
+        else
+        {
+            if($post)
+            {
+                $post->title = $request->input('title');
+                $post->contact_number = $request->input('contact_number');
+                $post->description = $request->input('description');
+                $post->update();
+                return response()->json([
+                    'status'=>200,
+                    'message'=>'Post Updated Successfully.'
+                ]);
+            }
+            else
+            {
+                return response()->json([
+                    'status'=>404,
+                    'message'=>'No Post Found.'
+                ]);
+            }
+
+        }
+        // resize image intervension
+        // if($request->hasFile('image'))
+        // {
+        //     $path = public_path('images/posts/'.$post->image);
+        //     if(is_file($path)){
+        //         unlink('images/posts/'.$post->image);
+        //     }
+
+        //     $name=time().$request->image->getClientOriginalName();
+        //     $request->image->move(public_path('images/posts'),$name);
+        //     $post->update([
+        //         'image'=>$name
+        //     ]);
+        // }
+        // $post->update([
+        //     'title' => $request->title,
+        //     'description' => $request->description,
+        //     'contact_number' => $request->contact_number,
+        // ]);
+        // return redirect()->route('posts.index');
     }
 
     /**
@@ -128,9 +191,23 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Post $post)
+    public function destroy($id)
     {
-        $post->delete();
-        return redirect()->route('posts.index');
+        $post = Post::find($id);
+        if($post)
+        {
+            $post->delete();
+            return response()->json([
+                'status'=>200,
+                'message'=>'Post Deleted Successfully.'
+            ]);
+        }
+        else
+        {
+            return response()->json([
+                'status'=>404,
+                'message'=>'No Post Found.'
+            ]);
+        }
     }
 }
