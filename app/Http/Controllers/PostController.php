@@ -53,11 +53,11 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'title' => 'required',
-            'description' => 'required|max:2048',
-            'contact_number' => 'required|unique:posts,contact_number',
-            // 'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            // 'image' => 'mimes:png,jpg,jpeg|max:1024',
+            'title' => 'required|min:3|max:50',
+            'description' => 'required|max:2048|min:10',
+            'contact_number' => 'required|min:10|max:15|unique:posts,contact_number',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            // 'image' => 'required|image|file|max:2048',
         ]);
 
         if($validator->fails())
@@ -135,10 +135,11 @@ class PostController extends Controller
     {
         $post = Post::find($id);
         $validator = Validator::make($request->all(), [
-            'title' => 'required',
-            'description' => 'required|max:2048',
-            'contact_number' => 'required|unique:posts,contact_number,'.$post->id,
-            'image' => 'mimes:png,jpg,jpeg|max:1024',
+            'title' => 'required|min:3|max:50',
+            'description' => 'required|max:2048|min:10',
+            'contact_number' => 'required|min:10|max:15|unique:posts,contact_number,'.$post->id,
+            // 'image' => 'required|image|file|max:2048',
+            'image' => 'mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         if($validator->fails())
