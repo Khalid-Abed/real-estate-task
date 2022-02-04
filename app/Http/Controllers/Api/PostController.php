@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-
+use Image;
 class PostController extends Controller
 {
     public function index()
@@ -47,9 +47,9 @@ class PostController extends Controller
 
         $post = new Post;
         if ($request->hasFile('image')){
-            $image_name = time().$request->file('image')->getClientOriginalExtension();
-            $request->file('image')->move(public_path('images/posts'), $image_name);
-            $post->image=$image_name;
+            $name=time().$request->file('image')->getClientOriginalName();
+            Image::make($request->file('image'))->resize(800,300)->save(public_path('images/posts/'.$name));
+            $post->image=$name;
         }
 
         $post->user_id=auth()->user()->id;
@@ -85,9 +85,9 @@ class PostController extends Controller
             {
                 @unlink($path);
             }
-            $image_name = time().$request->file('image')->getClientOriginalExtension();
-            $request->file('image')->move(public_path('images/posts'), $image_name);
-            $post->image=$image_name;
+            $name=time().$request->file('image')->getClientOriginalName();
+            Image::make($request->file('image'))->resize(800,300)->save(public_path('images/posts/'.$name));
+            $post->image=$name;
         }
         $post->title=$request->title;
         $post->description=$request->description;

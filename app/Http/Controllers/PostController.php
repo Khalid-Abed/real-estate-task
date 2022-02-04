@@ -8,6 +8,7 @@ use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
+use Image;
 
 class PostController extends Controller
 {
@@ -72,7 +73,7 @@ class PostController extends Controller
             if($request->hasFile('image'))
             {
                 $name=time().$request->file('image')->getClientOriginalName();
-                $request->file('image')->move(public_path('images/posts'),$name);
+                Image::make($request->file('image'))->resize(800,300)->save(public_path('images/posts/'.$name));
                 $post->image=$name;
             }
 
