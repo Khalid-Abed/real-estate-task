@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 03, 2022 at 12:43 AM
+-- Generation Time: Feb 04, 2022 at 01:27 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.3
 
@@ -59,7 +59,114 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (2, '2014_10_12_100000_create_password_resets_table', 1),
 (3, '2019_08_19_000000_create_failed_jobs_table', 1),
 (4, '2019_12_14_000001_create_personal_access_tokens_table', 1),
-(5, '2022_02_02_204503_create_posts_table', 1);
+(5, '2022_02_02_204503_create_posts_table', 1),
+(6, '2016_06_01_000001_create_oauth_auth_codes_table', 2),
+(7, '2016_06_01_000002_create_oauth_access_tokens_table', 2),
+(8, '2016_06_01_000003_create_oauth_refresh_tokens_table', 2),
+(9, '2016_06_01_000004_create_oauth_clients_table', 2),
+(10, '2016_06_01_000005_create_oauth_personal_access_clients_table', 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `oauth_access_tokens`
+--
+
+CREATE TABLE `oauth_access_tokens` (
+  `id` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `client_id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `scopes` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `revoked` tinyint(1) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `expires_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `oauth_access_tokens`
+--
+
+INSERT INTO `oauth_access_tokens` (`id`, `user_id`, `client_id`, `name`, `scopes`, `revoked`, `created_at`, `updated_at`, `expires_at`) VALUES
+('6bfdc2636e0083f7c33d7df3394890d66c5a94e54aac465e46ae5c6e98987b2d2fd1f97c2aacbff6', 7, 1, 'Logged-user', '[]', 0, '2022-02-04 10:25:09', '2022-02-04 10:25:09', '2023-02-04 12:25:09'),
+('b3ba5f4a188519f8449d936c8d77eadd48dd3edc5e89f01eeb70617d8ab708abd5d12277c0b63f9c', 7, 1, 'register-user', '[]', 0, '2022-02-04 10:19:37', '2022-02-04 10:19:37', '2023-02-04 12:19:37');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `oauth_auth_codes`
+--
+
+CREATE TABLE `oauth_auth_codes` (
+  `id` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `client_id` bigint(20) UNSIGNED NOT NULL,
+  `scopes` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `revoked` tinyint(1) NOT NULL,
+  `expires_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `oauth_clients`
+--
+
+CREATE TABLE `oauth_clients` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `secret` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `provider` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `redirect` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `personal_access_client` tinyint(1) NOT NULL,
+  `password_client` tinyint(1) NOT NULL,
+  `revoked` tinyint(1) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `oauth_clients`
+--
+
+INSERT INTO `oauth_clients` (`id`, `user_id`, `name`, `secret`, `provider`, `redirect`, `personal_access_client`, `password_client`, `revoked`, `created_at`, `updated_at`) VALUES
+(1, NULL, 'Laravel Personal Access Client', 'KQx56NyGbSzKJd9Rr2To26AhslXqeYF7z2sqeqCm', NULL, 'http://localhost', 1, 0, 0, '2022-02-04 10:07:53', '2022-02-04 10:07:53'),
+(2, NULL, 'Laravel Password Grant Client', 'U2GvD29E1BnLeeAtKYxArJYMkL5GfNJPW4fpIrL0', 'users', 'http://localhost', 0, 1, 0, '2022-02-04 10:07:53', '2022-02-04 10:07:53');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `oauth_personal_access_clients`
+--
+
+CREATE TABLE `oauth_personal_access_clients` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `client_id` bigint(20) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `oauth_personal_access_clients`
+--
+
+INSERT INTO `oauth_personal_access_clients` (`id`, `client_id`, `created_at`, `updated_at`) VALUES
+(1, 1, '2022-02-04 10:07:53', '2022-02-04 10:07:53');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `oauth_refresh_tokens`
+--
+
+CREATE TABLE `oauth_refresh_tokens` (
+  `id` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `access_token_id` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `revoked` tinyint(1) NOT NULL,
+  `expires_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -113,16 +220,13 @@ CREATE TABLE `posts` (
 --
 
 INSERT INTO `posts` (`id`, `user_id`, `title`, `description`, `image`, `contact_number`, `created_at`, `updated_at`) VALUES
-(1, 3, 'Ms.', 'Quam qui nihil sit rerum mollitia. Nisi pariatur accusantium ipsam voluptatem. Enim expedita assumenda molestiae repellat.', 'C:\\Users\\Khaled\\AppData\\Local\\Temp\\c3160fc3c4b71f7bf63a4602de1b7e65.png', '+1-802-789-9770', '2022-02-02 19:57:30', '2022-02-02 19:57:30'),
-(2, 3, 'Miss', 'Omnis dolor quidem et. Reiciendis reprehenderit est cumque vitae incidunt sed. Facilis et explicabo omnis velit.', 'C:\\Users\\Khaled\\AppData\\Local\\Temp\\085cd75d2305041b8a0c5f2cdeba5388.png', '475.959.6148', '2022-02-02 19:57:31', '2022-02-02 19:57:31'),
-(3, 1, 'Dr.', 'Laboriosam nisi velit nemo perspiciatis. Voluptates consequatur natus dolore alias ut et mollitia. Et saepe ipsum officia ex et officia. Nemo sit eaque in impedit quibusdam eum accusantium.', '1643843975p7.jpg', '(231) 759-7406', '2022-02-02 19:57:31', '2022-02-02 21:19:35'),
+(1, 3, 'Mohammed Ali', 'Quam qui nihil sit rerum mollitia. Nisi pariatur accusantium ipsam voluptatem. Enim expedita assumenda molestiae repellat.', 'C:\\Users\\Khaled\\AppData\\Local\\Temp\\c3160fc3c4b71f7bf63a4602de1b7e65.png', '+1-802-789-9770', '2022-02-02 19:57:30', '2022-02-03 21:27:30'),
 (4, 5, 'Dr.', 'Provident aut officiis voluptatem dignissimos. Sequi sed est itaque consequatur pariatur sed. Perferendis officia ut hic neque distinctio non. Adipisci rem voluptas mollitia illum odit veniam eum.', 'C:\\Users\\Khaled\\AppData\\Local\\Temp\\d4e628355d7360d6d0cc9780a1ce5e79.png', '+1.212.259.3885', '2022-02-02 19:57:31', '2022-02-02 19:57:31'),
 (5, 1, 'Mrs.', 'Autem ut rerum sed delectus dicta ipsa. Tenetur doloremque vel maxime amet et dolor. Consequatur aut sint est temporibus placeat odit.', 'C:\\Users\\Khaled\\AppData\\Local\\Temp\\e5d4a0c4e457fa5a7401dcf1ac6b5743.png', '+1 (850) 643-1879', '2022-02-02 19:57:31', '2022-02-02 19:57:31'),
 (6, 3, 'Ms.', 'Aliquam optio delectus voluptatem non error ut. Similique quis ut non fugit odit neque cumque. Laudantium dicta tempora rerum dolores.', 'C:\\Users\\Khaled\\AppData\\Local\\Temp\\bd85aa693e1d61e92ee6fbba17ca11eb.png', '1-743-303-2039', '2022-02-02 19:57:31', '2022-02-02 19:57:31'),
 (7, 3, 'Ms.', 'Aspernatur omnis ea quos debitis eos. Rerum pariatur cupiditate sed atque odit. Voluptatem labore a tempore similique.', 'C:\\Users\\Khaled\\AppData\\Local\\Temp\\27ebf37739311975247bbb4b98008229.png', '1-828-239-9103', '2022-02-02 19:57:31', '2022-02-02 19:57:31'),
 (8, 4, 'Prof.', 'In libero veritatis omnis quo sit rerum soluta. Explicabo voluptatem sit nulla. Et odit molestiae atque vero amet voluptas. Veritatis atque non fuga sit accusantium enim.', 'C:\\Users\\Khaled\\AppData\\Local\\Temp\\80bd457161660b587b53a47829d69016.png', '(737) 461-5827', '2022-02-02 19:57:31', '2022-02-02 19:57:31'),
 (9, 3, 'Dr.', 'Quam voluptas voluptates sit deserunt. Quibusdam impedit ullam at. Nam quasi sed sunt.', 'C:\\Users\\Khaled\\AppData\\Local\\Temp\\8f702b10a527bc374e92fca3967eb0a4.png', '(229) 519-8598', '2022-02-02 19:57:31', '2022-02-02 19:57:31'),
-(10, 2, 'Miss', 'Qui dolore molestiae explicabo molestiae explicabo. Dolores magnam et et est dolor quisquam quisquam commodi. Illo ut aut sint animi officia. Assumenda aliquam qui dolor quis ut vel adipisci.', 'C:\\Users\\Khaled\\AppData\\Local\\Temp\\36bff1ebea6763970874eabb1d12c59a.png', '(629) 550-9831', '2022-02-02 19:57:31', '2022-02-02 19:57:31'),
 (11, 1, 'Dr.', 'Nobis iste esse repellat quia. At quas quia eos veritatis. Eum doloremque illo perspiciatis consequatur corporis totam incidunt.', 'C:\\Users\\Khaled\\AppData\\Local\\Temp\\863076f56ca2e1841b56480db829efbf.png', '+1.931.546.7652', '2022-02-02 19:57:31', '2022-02-02 19:57:31'),
 (12, 1, 'Mr.', 'Quia eum vel similique pariatur blanditiis. Consequatur et id et quo assumenda ea atque.', 'C:\\Users\\Khaled\\AppData\\Local\\Temp\\2ad51009a60a31971d912bb3ba384804.png', '650.997.5521', '2022-02-02 19:57:31', '2022-02-02 19:57:31'),
 (13, 1, 'Dr.', 'Aut eligendi officiis similique nemo. Cupiditate voluptatibus facere harum et. Est quis est similique sit.', 'C:\\Users\\Khaled\\AppData\\Local\\Temp\\b70d21984ff87502289681347b52df42.png', '+19794728757', '2022-02-02 19:57:31', '2022-02-02 19:57:31'),
@@ -134,7 +238,6 @@ INSERT INTO `posts` (`id`, `user_id`, `title`, `description`, `image`, `contact_
 (19, 2, 'Ms.', 'Ut vel magni et omnis a aut. Recusandae voluptatum dicta expedita ab dolorem et adipisci rem. Et magni aut facilis fuga culpa temporibus.', 'C:\\Users\\Khaled\\AppData\\Local\\Temp\\432a3e743ef2b83ef944ca03e7701cb5.png', '1-678-202-8159', '2022-02-02 19:57:31', '2022-02-02 19:57:31'),
 (20, 5, 'Dr.', 'Et nulla modi molestiae iste. Error voluptatem provident mollitia. Atque est laborum aperiam est.', 'C:\\Users\\Khaled\\AppData\\Local\\Temp\\ced6a085bafa4ce9c640b1404b77c37c.png', '1-575-553-7611', '2022-02-02 19:57:31', '2022-02-02 19:57:31'),
 (21, 3, 'Prof.', 'Labore iste laudantium odit et ratione cumque dolores provident. Accusantium nisi doloribus maxime sit alias dolorem nihil. Minima optio hic voluptatum occaecati reprehenderit.', 'C:\\Users\\Khaled\\AppData\\Local\\Temp\\c50deafb2fb84bae23a2e025ae5eb79d.png', '(941) 327-1492', '2022-02-02 19:57:31', '2022-02-02 19:57:31'),
-(22, 2, 'Dr.', 'Laudantium autem quas fuga ducimus provident excepturi. Quidem sed saepe in eligendi vitae voluptatem. Assumenda enim autem accusantium.', 'C:\\Users\\Khaled\\AppData\\Local\\Temp\\ee7f223334d3143bc7dd79a062c03dac.png', '520.383.1070', '2022-02-02 19:57:31', '2022-02-02 19:57:31'),
 (23, 2, 'Mr.', 'Aut vel atque voluptate ea consequatur. Deleniti at sequi voluptatem quam aut reiciendis.', 'C:\\Users\\Khaled\\AppData\\Local\\Temp\\b333fea821e186ef4e1da1b7030d7d27.png', '269-659-2599', '2022-02-02 19:57:31', '2022-02-02 19:57:31'),
 (24, 5, 'Dr.', 'Aliquam est rerum vitae qui qui enim. Nemo et velit placeat suscipit ducimus et. Ratione enim consequatur eos eius.', 'C:\\Users\\Khaled\\AppData\\Local\\Temp\\cf223aaf4fe3a29c10cd9d2f3326f3a1.png', '+16893419541', '2022-02-02 19:57:31', '2022-02-02 19:57:31'),
 (25, 5, 'Mr.', 'Error voluptatem autem quaerat debitis quasi iure. Tempora fuga at tempora beatae recusandae labore velit.', 'C:\\Users\\Khaled\\AppData\\Local\\Temp\\a597b0c01f203c5dcee3fb4586c21dfd.png', '1-952-229-8779', '2022-02-02 19:57:31', '2022-02-02 19:57:31'),
@@ -144,7 +247,13 @@ INSERT INTO `posts` (`id`, `user_id`, `title`, `description`, `image`, `contact_
 (29, 4, 'Mr.', 'Eveniet exercitationem reiciendis incidunt animi quis rerum exercitationem a. Et dolor sit omnis. Autem eius corrupti velit. Consequatur aut libero labore fugiat quod ipsum a quo.', 'C:\\Users\\Khaled\\AppData\\Local\\Temp\\5d29c7dc067a52c32d2e952bea9163f5.png', '+1.803.910.6971', '2022-02-02 19:57:31', '2022-02-02 19:57:31'),
 (30, 2, 'Dr.', 'Ipsa ab aliquam hic dicta. Dolore labore rem voluptatibus quae repellat veniam labore qui. Cupiditate et eaque libero placeat.', 'C:\\Users\\Khaled\\AppData\\Local\\Temp\\7bdf7fdf9f29036fec4bc780e0f2aea0.png', '+1 (325) 824-8418', '2022-02-02 19:57:31', '2022-02-02 19:57:31'),
 (31, NULL, 'تيست', 'getClientOriginalName getClientOriginalNamegetClientOriginalNamegetClientOriginalNamegetClientOriginalNamegetClientOriginalNamegetClientOriginalNamegetClientOriginalName', '1643841124271988474_743159903755742_6228488132466760254_n.jpg', '01129350885', '2022-02-02 20:32:04', '2022-02-02 20:32:04'),
-(32, 1, 'jdsj', 'test test test test test test test test test test test test test test test test test test test test test test test test test test test test', '1643841283271988474_743159903755742_6228488132466760254_n.jpg', '0112930885', '2022-02-02 20:34:43', '2022-02-02 20:34:43');
+(32, 1, 'jdsj', 'test test test test test test test test test test test test test test test test test test test test test test test test test test test test', '1643841283271988474_743159903755742_6228488132466760254_n.jpg', '0112930885', '2022-02-02 20:34:43', '2022-02-02 20:34:43'),
+(33, NULL, 'asd', 'asd', NULL, 'asd', '2022-02-03 15:07:29', '2022-02-03 15:07:29'),
+(34, NULL, 'okok', 'kokoko', NULL, 'okoko', '2022-02-03 16:22:36', '2022-02-03 16:22:36'),
+(35, NULL, 'qwe', 'qwe', NULL, 'qwe', '2022-02-03 16:27:05', '2022-02-03 16:27:05'),
+(37, NULL, 'opopo', 'tesgahsanjsamskamska kmsakmskam', NULL, '3232656565', '2022-02-03 21:27:54', '2022-02-03 21:27:54'),
+(40, NULL, 'update last', 'description', '', '013121615', '2022-02-04 09:17:52', '2022-02-04 09:58:03'),
+(41, 7, 'test api 10', 'test api description 10', '1643977283png', '01213161540', '2022-02-04 10:21:23', '2022-02-04 10:21:23');
 
 -- --------------------------------------------------------
 
@@ -173,7 +282,8 @@ INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `re
 (3, 'Virgil Kovacek I', 'wiegand.nella@example.net', '2022-02-02 19:57:17', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'phgWVsYjUj', '2022-02-02 19:57:17', '2022-02-02 19:57:17'),
 (4, 'Dr. Paul Kautzer', 'adrian.torphy@example.org', '2022-02-02 19:57:17', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'J584C5NrYJ', '2022-02-02 19:57:17', '2022-02-02 19:57:17'),
 (5, 'Ms. Cathryn Hirthe II', 'hreilly@example.org', '2022-02-02 19:57:17', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', '4XLK0GanCO', '2022-02-02 19:57:17', '2022-02-02 19:57:17'),
-(6, 'Prof. Florian Brakus', 'pollich.marion@example.net', '2022-02-02 19:57:17', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', '5FAQrUpVbw', '2022-02-02 19:57:17', '2022-02-02 19:57:17');
+(6, 'Prof. Florian Brakus', 'pollich.marion@example.net', '2022-02-02 19:57:17', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', '5FAQrUpVbw', '2022-02-02 19:57:17', '2022-02-02 19:57:17'),
+(7, 'oraby', 'oraby@mail.com', NULL, '$2y$10$e4ASddX10bg4iNnXd7Mku.g6d7CFJa4GXeIgGxd3kC546cMPDaRUK', NULL, '2022-02-04 10:19:37', '2022-02-04 10:19:37');
 
 --
 -- Indexes for dumped tables
@@ -191,6 +301,40 @@ ALTER TABLE `failed_jobs`
 --
 ALTER TABLE `migrations`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `oauth_access_tokens`
+--
+ALTER TABLE `oauth_access_tokens`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `oauth_access_tokens_user_id_index` (`user_id`);
+
+--
+-- Indexes for table `oauth_auth_codes`
+--
+ALTER TABLE `oauth_auth_codes`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `oauth_auth_codes_user_id_index` (`user_id`);
+
+--
+-- Indexes for table `oauth_clients`
+--
+ALTER TABLE `oauth_clients`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `oauth_clients_user_id_index` (`user_id`);
+
+--
+-- Indexes for table `oauth_personal_access_clients`
+--
+ALTER TABLE `oauth_personal_access_clients`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `oauth_refresh_tokens`
+--
+ALTER TABLE `oauth_refresh_tokens`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `oauth_refresh_tokens_access_token_id_index` (`access_token_id`);
 
 --
 -- Indexes for table `password_resets`
@@ -235,7 +379,19 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT for table `oauth_clients`
+--
+ALTER TABLE `oauth_clients`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `oauth_personal_access_clients`
+--
+ALTER TABLE `oauth_personal_access_clients`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
@@ -247,13 +403,13 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT for table `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Constraints for dumped tables

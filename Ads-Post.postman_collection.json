@@ -1,0 +1,317 @@
+{
+	"info": {
+		"_postman_id": "a9273ab7-4b8b-4313-a650-accc4e1c4ba9",
+		"name": "Ads-Post",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "get-all-posts",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiYjNiYTVmNGExODg1MTlmODQ0OWQ5MzZjOGQ3N2VhZGQ0OGRkM2VkYzVlODlmMDFlZWI3MDYxN2Q4YWI3MDhhYmQ1ZDEyMjc3YzBiNjNmOWMiLCJpYXQiOjE2NDM5NzcxNzcuNDIzOTQ0LCJuYmYiOjE2NDM5NzcxNzcuNDIzOTUsImV4cCI6MTY3NTUxMzE3Ny40MTQyNTUsInN1YiI6IjciLCJzY29wZXMiOltdfQ.nPMUOfZ82dKGvnbj0LCb8uyhN7vOUvSj-7_i1CtY0XTyfRCxKFOzA_-ov3DSZH5vMoG06X56IxPkdfEchwdJBsCDaRrmabwL598jbZ4LxEjOFS0jZ3bvJr0_SjiOtbs1oZPT9KeqQv3gGkak11SNXK7RR5SfzRbXUXRhbyXsRhS83EXZz8jyYSYtmh7bwHhi6Fb-GBKo6eRGhCbXmOakfuQdzKq4GgCnOsAdh3mkkUmgagIqAu5sAclUBdxfQK1wnw7_fcx3ndL3OR98zVVTzJzUTH8Lz_jhvrzDdysBTbjghARSuPxrBAetC3tQNeBIf4vpuzH5CLMmt1z58e-KRqUT7jPNS9OFYt4jIl8AW_HEZHVC0NyH22FNlQVlmIIv9kvm3yTg_PxoYCSW2Rv0lvz87bJq-sUsEEAbb9UChjVUfdbhsNwfCRLcEIyBq1mwGDiQrtjqnfvIM-xHwDZutuVcTgcDqZ096G923De-lD7qu_35JcCLtytZnurWXMZWpZonU8bXowPzkZsorFU_cOLVb3ugwJdWOpa49DDzkG9Td7Gxmuu8E06Sssfw7Kd5vCD1YngZ7tKllHOY1evXrVel8nYkXrOkBRIViQRYzH769_7VUGUIc0CAg8Ng2SDkbxGPDpseaGwxcSjFxXi8PDiboq3Hsf74oBwgkQYfIlE",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:8000/api/get-all-posts",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"get-all-posts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-specefic-post",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiYjNiYTVmNGExODg1MTlmODQ0OWQ5MzZjOGQ3N2VhZGQ0OGRkM2VkYzVlODlmMDFlZWI3MDYxN2Q4YWI3MDhhYmQ1ZDEyMjc3YzBiNjNmOWMiLCJpYXQiOjE2NDM5NzcxNzcuNDIzOTQ0LCJuYmYiOjE2NDM5NzcxNzcuNDIzOTUsImV4cCI6MTY3NTUxMzE3Ny40MTQyNTUsInN1YiI6IjciLCJzY29wZXMiOltdfQ.nPMUOfZ82dKGvnbj0LCb8uyhN7vOUvSj-7_i1CtY0XTyfRCxKFOzA_-ov3DSZH5vMoG06X56IxPkdfEchwdJBsCDaRrmabwL598jbZ4LxEjOFS0jZ3bvJr0_SjiOtbs1oZPT9KeqQv3gGkak11SNXK7RR5SfzRbXUXRhbyXsRhS83EXZz8jyYSYtmh7bwHhi6Fb-GBKo6eRGhCbXmOakfuQdzKq4GgCnOsAdh3mkkUmgagIqAu5sAclUBdxfQK1wnw7_fcx3ndL3OR98zVVTzJzUTH8Lz_jhvrzDdysBTbjghARSuPxrBAetC3tQNeBIf4vpuzH5CLMmt1z58e-KRqUT7jPNS9OFYt4jIl8AW_HEZHVC0NyH22FNlQVlmIIv9kvm3yTg_PxoYCSW2Rv0lvz87bJq-sUsEEAbb9UChjVUfdbhsNwfCRLcEIyBq1mwGDiQrtjqnfvIM-xHwDZutuVcTgcDqZ096G923De-lD7qu_35JcCLtytZnurWXMZWpZonU8bXowPzkZsorFU_cOLVb3ugwJdWOpa49DDzkG9Td7Gxmuu8E06Sssfw7Kd5vCD1YngZ7tKllHOY1evXrVel8nYkXrOkBRIViQRYzH769_7VUGUIc0CAg8Ng2SDkbxGPDpseaGwxcSjFxXi8PDiboq3Hsf74oBwgkQYfIlE",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:8000/api/get-specefic-post/11",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"get-specefic-post",
+						"11"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add-new-post",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiYjNiYTVmNGExODg1MTlmODQ0OWQ5MzZjOGQ3N2VhZGQ0OGRkM2VkYzVlODlmMDFlZWI3MDYxN2Q4YWI3MDhhYmQ1ZDEyMjc3YzBiNjNmOWMiLCJpYXQiOjE2NDM5NzcxNzcuNDIzOTQ0LCJuYmYiOjE2NDM5NzcxNzcuNDIzOTUsImV4cCI6MTY3NTUxMzE3Ny40MTQyNTUsInN1YiI6IjciLCJzY29wZXMiOltdfQ.nPMUOfZ82dKGvnbj0LCb8uyhN7vOUvSj-7_i1CtY0XTyfRCxKFOzA_-ov3DSZH5vMoG06X56IxPkdfEchwdJBsCDaRrmabwL598jbZ4LxEjOFS0jZ3bvJr0_SjiOtbs1oZPT9KeqQv3gGkak11SNXK7RR5SfzRbXUXRhbyXsRhS83EXZz8jyYSYtmh7bwHhi6Fb-GBKo6eRGhCbXmOakfuQdzKq4GgCnOsAdh3mkkUmgagIqAu5sAclUBdxfQK1wnw7_fcx3ndL3OR98zVVTzJzUTH8Lz_jhvrzDdysBTbjghARSuPxrBAetC3tQNeBIf4vpuzH5CLMmt1z58e-KRqUT7jPNS9OFYt4jIl8AW_HEZHVC0NyH22FNlQVlmIIv9kvm3yTg_PxoYCSW2Rv0lvz87bJq-sUsEEAbb9UChjVUfdbhsNwfCRLcEIyBq1mwGDiQrtjqnfvIM-xHwDZutuVcTgcDqZ096G923De-lD7qu_35JcCLtytZnurWXMZWpZonU8bXowPzkZsorFU_cOLVb3ugwJdWOpa49DDzkG9Td7Gxmuu8E06Sssfw7Kd5vCD1YngZ7tKllHOY1evXrVel8nYkXrOkBRIViQRYzH769_7VUGUIc0CAg8Ng2SDkbxGPDpseaGwxcSjFxXi8PDiboq3Hsf74oBwgkQYfIlE",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "title",
+							"value": "test api 10",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "test api description 10",
+							"type": "text"
+						},
+						{
+							"key": "contact_number",
+							"value": "01213161540",
+							"type": "text"
+						},
+						{
+							"key": "image",
+							"type": "file",
+							"src": "/C:/xampp/htdocs/Projects/Product Picture/Brand Image/Oppo-Logo.wine.png"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:8000/api/create-post",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"create-post"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update-post",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiYjNiYTVmNGExODg1MTlmODQ0OWQ5MzZjOGQ3N2VhZGQ0OGRkM2VkYzVlODlmMDFlZWI3MDYxN2Q4YWI3MDhhYmQ1ZDEyMjc3YzBiNjNmOWMiLCJpYXQiOjE2NDM5NzcxNzcuNDIzOTQ0LCJuYmYiOjE2NDM5NzcxNzcuNDIzOTUsImV4cCI6MTY3NTUxMzE3Ny40MTQyNTUsInN1YiI6IjciLCJzY29wZXMiOltdfQ.nPMUOfZ82dKGvnbj0LCb8uyhN7vOUvSj-7_i1CtY0XTyfRCxKFOzA_-ov3DSZH5vMoG06X56IxPkdfEchwdJBsCDaRrmabwL598jbZ4LxEjOFS0jZ3bvJr0_SjiOtbs1oZPT9KeqQv3gGkak11SNXK7RR5SfzRbXUXRhbyXsRhS83EXZz8jyYSYtmh7bwHhi6Fb-GBKo6eRGhCbXmOakfuQdzKq4GgCnOsAdh3mkkUmgagIqAu5sAclUBdxfQK1wnw7_fcx3ndL3OR98zVVTzJzUTH8Lz_jhvrzDdysBTbjghARSuPxrBAetC3tQNeBIf4vpuzH5CLMmt1z58e-KRqUT7jPNS9OFYt4jIl8AW_HEZHVC0NyH22FNlQVlmIIv9kvm3yTg_PxoYCSW2Rv0lvz87bJq-sUsEEAbb9UChjVUfdbhsNwfCRLcEIyBq1mwGDiQrtjqnfvIM-xHwDZutuVcTgcDqZ096G923De-lD7qu_35JcCLtytZnurWXMZWpZonU8bXowPzkZsorFU_cOLVb3ugwJdWOpa49DDzkG9Td7Gxmuu8E06Sssfw7Kd5vCD1YngZ7tKllHOY1evXrVel8nYkXrOkBRIViQRYzH769_7VUGUIc0CAg8Ng2SDkbxGPDpseaGwxcSjFxXi8PDiboq3Hsf74oBwgkQYfIlE",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "title",
+							"value": "update last",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "description",
+							"type": "text"
+						},
+						{
+							"key": "contact_number",
+							"value": "013121615",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:8000/api/update-post/40",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"update-post",
+						"40"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete-post",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiYjNiYTVmNGExODg1MTlmODQ0OWQ5MzZjOGQ3N2VhZGQ0OGRkM2VkYzVlODlmMDFlZWI3MDYxN2Q4YWI3MDhhYmQ1ZDEyMjc3YzBiNjNmOWMiLCJpYXQiOjE2NDM5NzcxNzcuNDIzOTQ0LCJuYmYiOjE2NDM5NzcxNzcuNDIzOTUsImV4cCI6MTY3NTUxMzE3Ny40MTQyNTUsInN1YiI6IjciLCJzY29wZXMiOltdfQ.nPMUOfZ82dKGvnbj0LCb8uyhN7vOUvSj-7_i1CtY0XTyfRCxKFOzA_-ov3DSZH5vMoG06X56IxPkdfEchwdJBsCDaRrmabwL598jbZ4LxEjOFS0jZ3bvJr0_SjiOtbs1oZPT9KeqQv3gGkak11SNXK7RR5SfzRbXUXRhbyXsRhS83EXZz8jyYSYtmh7bwHhi6Fb-GBKo6eRGhCbXmOakfuQdzKq4GgCnOsAdh3mkkUmgagIqAu5sAclUBdxfQK1wnw7_fcx3ndL3OR98zVVTzJzUTH8Lz_jhvrzDdysBTbjghARSuPxrBAetC3tQNeBIf4vpuzH5CLMmt1z58e-KRqUT7jPNS9OFYt4jIl8AW_HEZHVC0NyH22FNlQVlmIIv9kvm3yTg_PxoYCSW2Rv0lvz87bJq-sUsEEAbb9UChjVUfdbhsNwfCRLcEIyBq1mwGDiQrtjqnfvIM-xHwDZutuVcTgcDqZ096G923De-lD7qu_35JcCLtytZnurWXMZWpZonU8bXowPzkZsorFU_cOLVb3ugwJdWOpa49DDzkG9Td7Gxmuu8E06Sssfw7Kd5vCD1YngZ7tKllHOY1evXrVel8nYkXrOkBRIViQRYzH769_7VUGUIc0CAg8Ng2SDkbxGPDpseaGwxcSjFxXi8PDiboq3Hsf74oBwgkQYfIlE",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:8000/api/destroy-post/22",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"destroy-post",
+						"22"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user-register",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "oraby",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "oraby@mail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "123456789",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:8000/api/register",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user-login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "oraby@mail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "123456789",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:8000/api/login",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
