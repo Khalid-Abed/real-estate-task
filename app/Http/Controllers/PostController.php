@@ -57,7 +57,6 @@ class PostController extends Controller
             'description' => 'required|max:2048|min:10',
             'contact_number' => 'required|min:10|max:15|unique:posts,contact_number',
             // 'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            // 'image' => 'required|image|file|max:2048',
         ]);
 
         if($validator->fails())
@@ -73,7 +72,6 @@ class PostController extends Controller
             if($request->hasFile('image'))
             {
                 $name=time().$request->file('image')->getClientOriginalName();
-                // $name=time().$request->file('image')->extension();
                 $request->file('image')->move(public_path('images/posts'),$name);
                 $post->image=$name;
             }
@@ -139,7 +137,6 @@ class PostController extends Controller
             'title' => 'required|min:3|max:50',
             'description' => 'required|max:2048|min:10',
             'contact_number' => 'required|min:10|max:15|unique:posts,contact_number,'.$post->id,
-            // 'image' => 'required|image|file|max:2048',
             // 'image' => 'mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
